@@ -1,0 +1,46 @@
+{
+	"name": "git-dep-url",
+	"version": "0.0.1",
+	"description": "A simple TypeScript library that extracts dependency URLs from various package managers in Git repositories.",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"lint": "prettier --plugin-search-dir . --check . && eslint .",
+		"format": "prettier --plugin-search-dir . --write .",
+		"build": "tsc",
+		"commit": "npx cz"
+	},
+	"keywords": [
+		"git",
+		"dependencies"
+	],
+	"author": "Ioannis Tourkogiorgis",
+	"license": "Apache-2.0",
+	"devDependencies": {
+		"@types/fs-extra": "^11.0.1",
+		"@types/node": "^18.15.11",
+		"@typescript-eslint/eslint-plugin": "^5.57.0",
+		"@typescript-eslint/parser": "^5.57.0",
+		"cz-conventional-changelog": "^3.3.0",
+		"eslint": "^8.37.0",
+		"eslint-config-prettier": "^8.8.0",
+		"prettier": "^2.8.7",
+		"ts-node": "^10.9.1",
+		"tsconfig-paths": "^4.2.0",
+		"typescript": "^5.0.2"
+	},
+	"dependencies": {
+		"cd": "^0.3.3",
+		"fs-extra": "^11.1.1",
+		"glob": "^9.3.2",
+		"isomorphic-git": "^1.23.0",
+		"toml": "^3.0.0",
+		"xml2js": "^0.4.23"
+	},
+	"config": {
+		"commitizen": {
+			"path": "./node_modules/cz-conventional-changelog"
+		}
+	}
+}
