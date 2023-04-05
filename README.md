@@ -6,11 +6,13 @@ A simple TypeScript library that extracts dependency URLs from various package m
 
 ## 🚀 Features
 
-- Supports multiple package managers (npm, nuget, pypi, crates)
-- Supports monorepos
-- Unified API for easy access to dependency information
-- Fetches package and repository URLs
-- Automatically removes duplicate dependencies
+- Supported package managers:
+  - npm
+  - nuget
+  - pypi
+  - crates
+- Works with monorepos
+- No duplicate dependencies
 
 ## 📦 Installation
 
@@ -31,7 +33,7 @@ const depUrlExtractor = new DepUrlExtractor();
 
 (async () => {
  const dependencies = await depUrlExtractor.discoverUrls('https://github.com/your-project.git');
- 
+
  console.log(JSON.stringify(dependencies, null, 2));
 })();
 ```
