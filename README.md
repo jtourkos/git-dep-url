@@ -2,7 +2,7 @@
 
 A simple TypeScript library that extracts dependency URLs from various package managers in Git repositories.
 
-> ⚠️ **Warning**: This library is designed to cover common ways of specifying dependencies across different package managers. While it aims to identify as many dependencies as possible, it is not guaranteed to cover all cases or to identify every dependency for every project. Please be aware of this limitation when using this library and verify the results in your specific use case.
+> **Warning**: This library is designed to cover common ways of specifying dependencies across different package managers. While it aims to identify as many dependencies as possible, it is not guaranteed to cover all cases or to identify every dependency for every project. Please be aware of this limitation when using this library and verify the results in your specific use case.
 
 ## 🚀 Features
 
