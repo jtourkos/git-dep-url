@@ -8,6 +8,7 @@ import http from 'isomorphic-git/http/node';
 import { Dependency, PackageManagerDependencies } from './types';
 import { PipManager } from './PipManager';
 import CratesManager from './CratesManager';
+import GemManager from './GemManager';
 
 export default class DepUrlExtractor {
 	private packageManagers: PackageManagerBase[];
@@ -17,11 +18,12 @@ export default class DepUrlExtractor {
 			new NpmManager(),
 			new NugetManager(),
 			new PipManager(),
-			new CratesManager()
+			new CratesManager(),
+			new GemManager()
 		];
 	}
 
-	async getProjectDependencies(gitUrl: string): Promise<PackageManagerDependencies> {
+	async discoverUrls(gitUrl: string): Promise<PackageManagerDependencies> {
 		try {
 			const dependencies = await this.retry(async () => await this.tryGetDependencies(gitUrl));
 			return dependencies;
