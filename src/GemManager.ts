@@ -16,19 +16,21 @@ export default class GemManager extends PackageManagerBase {
 		for (const line of lines) {
 			if (line && !line.startsWith('#')) {
 				const packageName = this.extractPackageName(line);
-				const packageUrl = `https://rubygems.org/gems/${packageName}`;
-				const { repoUrl, otherUrls } = await this.fetchRubyGemsRepoUrl(packageName);
+				if (packageName) {
+					const packageUrl = `https://rubygems.org/gems/${packageName}`;
+					const { repoUrl, otherUrls } = await this.fetchRubyGemsRepoUrl(packageName);
 
-				const urls: DependencyUrls = {
-					package: packageUrl,
-					...otherUrls
-				};
+					const urls: DependencyUrls = {
+						package: packageUrl,
+						...otherUrls
+					};
 
-				if (repoUrl) {
-					urls.repo = repoUrl;
+					if (repoUrl) {
+						urls.repo = repoUrl;
+					}
+
+					dependencies.push({ name: packageName, urls });
 				}
-
-				dependencies.push({ name: packageName, urls });
 			}
 		}
 
@@ -51,7 +53,6 @@ export default class GemManager extends PackageManagerBase {
 		const response = await fetch(apiUrl);
 
 		if (!response.ok) {
-			console.warn(`Error fetching package info for ${packageName}: ${response.statusText}`);
 			return {};
 		}
 

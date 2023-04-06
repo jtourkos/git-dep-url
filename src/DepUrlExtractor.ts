@@ -25,67 +25,61 @@ export default class DepUrlExtractor {
 
 	async discoverUrls(gitUrl: string): Promise<PackageManagerDependencies> {
 		try {
-			const dependencies = await this.retry(async () => await this.tryGetDependencies(gitUrl));
+			const dependencies = await this.retry(async () => await this.getUrls(gitUrl));
 			return dependencies;
-		} catch (error) {
-			console.error('Failed to fetch dependencies after retries:', error);
 		} finally {
 			await fs.promises.rm(path.join(__dirname, 'temp'), { recursive: true });
 		}
 	}
 
-	private async tryGetDependencies(gitUrl: string): Promise<PackageManagerDependencies> {
-		try {
-			const tempFolderPath = await this.cloneRepository(gitUrl);
+	private async getUrls(gitUrl: string): Promise<PackageManagerDependencies> {
+		const tempFolderPath = await this.cloneRepository(gitUrl);
 
-			const dependencyFilesPromises = this.packageManagers.map((pm) =>
-				pm.findDependencyFiles(tempFolderPath)
-			);
-			const dependencyFiles = (await Promise.all(dependencyFilesPromises)).flat();
+		const dependencyFilesPromises = this.packageManagers.map((pm) =>
+			pm.findDependencyFiles(tempFolderPath)
+		);
+		const dependencyFiles = (await Promise.all(dependencyFilesPromises)).flat();
 
-			const dependenciesPromises: Promise<{
-				packageManager: string;
-				dependencies: Dependency[];
-			}>[] = [];
+		const dependenciesPromises: Promise<{
+			packageManager: string;
+			dependencies: Dependency[];
+		}>[] = [];
 
-			dependencyFiles.forEach((filePath) => {
-				const packageManager = this.packageManagers.find((pm) => filePath.endsWith(pm.filePattern));
-				if (packageManager) {
-					const promise = (async () => {
-						const dependencies = await packageManager.getDependencies(filePath);
-						return { packageManager: packageManager.name, dependencies };
-					})();
-					dependenciesPromises.push(promise);
-				}
-			});
+		dependencyFiles.forEach((filePath) => {
+			const packageManager = this.packageManagers.find((pm) => filePath.endsWith(pm.filePattern));
+			if (packageManager) {
+				const promise = (async () => {
+					const dependencies = await packageManager.getDependencies(filePath);
+					return { packageManager: packageManager.name, dependencies };
+				})();
+				dependenciesPromises.push(promise);
+			}
+		});
 
-			const results = await Promise.all(dependenciesPromises);
+		const results = await Promise.all(dependenciesPromises);
 
-			const aggregatedDependencies: Partial<PackageManagerDependencies> = {};
+		const aggregatedDependencies: Partial<PackageManagerDependencies> = {};
 
-			for (const result of results) {
-				const { packageManager, dependencies } = result;
+		for (const result of results) {
+			const { packageManager, dependencies } = result;
 
-				if (!aggregatedDependencies[packageManager]) {
-					aggregatedDependencies[packageManager] = [];
-				}
-
-				for (const dependency of dependencies) {
-					aggregatedDependencies[packageManager].push({
-						name: dependency.name,
-						urls: dependency.urls
-					});
-				}
-
-				aggregatedDependencies[packageManager] = this.removeDuplicateDependencies(
-					aggregatedDependencies[packageManager] as Dependency[]
-				);
+			if (!aggregatedDependencies[packageManager]) {
+				aggregatedDependencies[packageManager] = [];
 			}
 
-			return aggregatedDependencies as PackageManagerDependencies;
-		} catch (error) {
-			console.error(error);
+			for (const dependency of dependencies) {
+				aggregatedDependencies[packageManager].push({
+					name: dependency.name,
+					urls: dependency.urls
+				});
+			}
+
+			aggregatedDependencies[packageManager] = this.removeDuplicateDependencies(
+				aggregatedDependencies[packageManager] as Dependency[]
+			);
 		}
+
+		return aggregatedDependencies as PackageManagerDependencies;
 	}
 
 	private async cloneRepository(gitUrl: string): Promise<string> {
@@ -108,7 +102,6 @@ export default class DepUrlExtractor {
 				return await asyncFn();
 			} catch (error) {
 				lastError = error;
-				console.error(`Attempt ${attempt} failed: ${error.message}`);
 
 				if (attempt < retries + 1) {
 					await new Promise((resolve) => setTimeout(resolve, delay));

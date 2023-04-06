@@ -6,13 +6,19 @@ A simple TypeScript library that extracts dependency URLs from various package m
 
 ## 🚀 Features
 
-- Supported package managers:
-  - npm
-  - nuget
-  - pypi
-  - crates
-- Works with monorepos
-- No duplicate dependencies
+Supported package managers:
+
+1. **Python (Pip)**: handles Python projects with `requirements.txt` files. It extracts package info from the `PyPI` API.
+
+2. **Ruby (Gems)**: handles Ruby projects with `Gemfile` files. It extracts package info from the `RubyGems` API.
+
+3. **JavaScript (NPM)**: handles JavaScript projects with `package.json` files. It extracts package info from the `NPM` API.
+
+4. **.NET (NuGet)**: handles .NET projects with `*.csproj` files. It extracts package info from the `NuGet` API.
+
+5. **Rust (Cargo)**: handles Rust projects with `Cargo.toml` files. It extracts package info from the `Crates` API.
+
+6. **Java (Maven)**: handles Java projects with `pom.xml` files. It extracts package info from `Maven` Central Repository.
 
 ## 📦 Installation
 

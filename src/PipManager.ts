@@ -51,7 +51,6 @@ export class PipManager extends PackageManagerBase {
 		const response = await fetch(apiUrl);
 
 		if (!response.ok) {
-			console.warn(`Error fetching package info for ${packageName}: ${response.statusText}`);
 			return {};
 		}
 
