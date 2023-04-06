@@ -2,11 +2,11 @@
 
 A simple TypeScript library that extracts dependency URLs from various package managers in Git repositories.
 
-> **Warning**: This library is designed to cover common ways of specifying dependencies across different package managers. While it aims to identify as many dependencies as possible, it is not guaranteed to cover all cases or to identify every dependency for every project. Please be aware of this limitation when using this library and verify the results in your specific use case.
+:warning: **Warning**: This library is designed to cover common ways of specifying dependencies across different package managers. While it aims to identify as many dependencies as possible, it is not guaranteed to cover all cases or to identify every dependency for every project. Please be aware of this limitation when using this library and verify the results in your specific use case.
 
-## 🚀 Features
+:warning: **Java Dependencies**: The library always assumes the <u>latest version</u> of each dependency when generating URLs. This is due to a limitation in fetching package information without knowing the exact version of the package. Please note that the generated URLs for Java dependencies might not always correspond to the exact version used in your project.
 
-Supported package managers:
+## 🚀 Supported Package Managers
 
 1. **Python (Pip)**: handles Python projects with `requirements.txt` files. It extracts package info from the `PyPI` API.
 

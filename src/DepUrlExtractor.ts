@@ -9,6 +9,7 @@ import { Dependency, PackageManagerDependencies } from './types';
 import { PipManager } from './PipManager';
 import CratesManager from './CratesManager';
 import GemManager from './GemManager';
+import PomManager from './PomManager';
 
 export default class DepUrlExtractor {
 	private packageManagers: PackageManagerBase[];
@@ -19,7 +20,8 @@ export default class DepUrlExtractor {
 			new NugetManager(),
 			new PipManager(),
 			new CratesManager(),
-			new GemManager()
+			new GemManager(),
+			new PomManager()
 		];
 	}
 
