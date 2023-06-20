@@ -117,14 +117,22 @@ export default class DepUrlExtractor {
 
 	private removeDuplicateAndFormatDependencies(dependencies: Dependency[]): Dependency[] {
 		return dependencies.reduce((acc: Dependency[], dependency) => {
+			// If the URL starts with "git+", remove it.
 			if (dependency.urls.repo?.startsWith('git+')) {
 				dependency.urls.repo = dependency.urls.repo.replace('git+', '');
 			}
 
+			// If the URL starts with "git://", replace it with "https://".
+			if (dependency.urls.repo?.startsWith('git://')) {
+				dependency.urls.repo = dependency.urls.repo.replace('git://', 'https://');
+			}
+
+			// If the dependency doesn't exist yet, add it.
 			const existingDependency = acc.find((dep) => dep.name === dependency.name);
 			if (!existingDependency) {
 				acc.push(dependency);
 			}
+
 			return acc;
 		}, []);
 	}
