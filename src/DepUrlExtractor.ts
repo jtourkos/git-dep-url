@@ -127,6 +127,11 @@ export default class DepUrlExtractor {
 				dependency.urls.repo = dependency.urls.repo.replace('git://', 'https://');
 			}
 
+			// If the URL ends with ".git", remove it.
+			if (dependency.urls.repo?.endsWith('.git')) {
+				dependency.urls.repo = dependency.urls.repo.slice(0, -4);
+			}
+
 			// If the dependency doesn't exist yet, add it.
 			const existingDependency = acc.find((dep) => dep.name === dependency.name);
 			if (!existingDependency) {
