@@ -76,7 +76,7 @@ export default class DepUrlExtractor {
 				});
 			}
 
-			aggregatedDependencies[packageManager] = this.removeDuplicateDependencies(
+			aggregatedDependencies[packageManager] = this.removeDuplicateAndFormatDependencies(
 				aggregatedDependencies[packageManager] as Dependency[]
 			);
 		}
@@ -115,8 +115,12 @@ export default class DepUrlExtractor {
 		throw lastError;
 	}
 
-	private removeDuplicateDependencies(dependencies: Dependency[]): Dependency[] {
+	private removeDuplicateAndFormatDependencies(dependencies: Dependency[]): Dependency[] {
 		return dependencies.reduce((acc: Dependency[], dependency) => {
+			if (dependency.urls.repo?.startsWith('git+')) {
+				dependency.urls.repo = dependency.urls.repo.replace('git+', '');
+			}
+
 			const existingDependency = acc.find((dep) => dep.name === dependency.name);
 			if (!existingDependency) {
 				acc.push(dependency);
