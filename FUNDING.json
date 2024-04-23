@@ -1,7 +1,7 @@
 {
   "drips": {
-    "ethereum": {
-      "ownedBy": "0x945AFA63507e56748368D3F31ccC35043efDbd4b"
+    "optimism-sepolia": {
+      "ownedBy": "0x20a9273a452268E5a034951ae5381a45E14aC2a3"
     }
   }
 }
